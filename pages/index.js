@@ -1,34 +1,35 @@
+import App, {Container} from 'next/app'
+import React from 'react'
 const fetch = require('isomorphic-unfetch')
 const API = require('../api/index')
 const URL = 'http://localhost:3000/admin/api'
 
-function HomePage({stars}) {
-return <div>Welcome to Next.js!{stars}</div>
-}
+// function HomePage({stars}) {
+// return <div>Welcome to Next.js!{stars}</div>
+// }
 
-const query = `
-query{
-  allUsers{
-    id
+// HomePage.getInitialProps = async () => {
+//   const id = 'id'
+//   const res = await API.queryid({id})
+//   const data = JSON.stringify(res.body)
+//   return { stars: data }
+// }
+
+export default class CyzyCmsApp extends App {
+  static async getInitialProps({ compoment, router, ctx }) {
+    const id = 'id'
+    const res = await API.queryid({id})
+    const data = JSON.stringify(res.body)
+    return {data}
+  }
+
+  render () {
+    const {data} = this.props
+    return (
+      <div>
+        Welcome to Next.js!{data}
+        <img src="/static/share_friends.png" alt="my image" />
+      </div>
+    )
   }
 }
-`
-
-HomePage.getInitialProps = async () => {
-  // const res = await fetch('https://api.github.com/repos/zeit/next.js')
-  const res = await fetch(URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query })
-  })
-  // console.log(res)
-  const body = await res.json()
-  console.log(body.data)
-  const d = body.data
-  const data = JSON.stringify({ d })
-  return { stars: data }
-}
-
-export default HomePage

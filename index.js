@@ -5,6 +5,7 @@ const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { StaticApp } = require('@keystonejs/app-static');
 const { NextApp } = require('@keystonejs/app-next');
+require('babel-register')
 
 const Users = require("./lists/users.js")
 const Todos = require("./lists/todo.js")
@@ -52,7 +53,7 @@ module.exports = {
       // isAccessAllowed: ({ authentication: { item: user, listKey: list } }) => !!user && !!user.isAdmin,
     }),
     new StaticApp({
-      path: '/',
+      path: '/index',
       src: 'static',
       fallback: 'index.html',
     }),
